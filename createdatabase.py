@@ -9,4 +9,4 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
-cursor.execute("CREATE DATABASE fionanealon1$datarep")
+cursor.execute("CREATE DATABASE fionanealon4$datarep")
