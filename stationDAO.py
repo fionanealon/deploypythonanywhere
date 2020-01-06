@@ -2,7 +2,7 @@ import mysql.connector
 import dbconfig as cfg
 class StationDAO:
     db=""
-    def __init__(self): 
+    def connectToDB(self): 
         self.db = mysql.connector.connect(
         host=       cfg.mysql['host'],
         user=       cfg.mysql['user'],
@@ -10,6 +10,14 @@ class StationDAO:
         database=   cfg.mysql['database'],
         )
     
+    def __init__(self):
+        self.connectToDB()
+
+    def getCursor(self):
+        if not self.db.is_connected():
+            self.connectToDB()
+        return self.db.cursor()
+
             
     def create(self, values):
         cursor = self.db.cursor()
@@ -17,7 +25,9 @@ class StationDAO:
         cursor.execute(sql, values)
 
         self.db.commit()
-        return cursor.lastrowid
+        lastRowId=cursor.lastrowid
+        cursor.close
+        return lastRowId
 
     def getAll(self):
         cursor = self.db.cursor()
@@ -29,7 +39,7 @@ class StationDAO:
         for result in results:
             print(result)
             returnArray.append(self.convertToDictionary(result))
-
+        cursor.close()
         return returnArray
 
     def findByID(self, id):
@@ -39,13 +49,16 @@ class StationDAO:
 
         cursor.execute(sql, values)
         result = cursor.fetchone()
-        return self.convertToDictionary(result)
+        fuel_station=self.convertToDictionary(result)
+        cursor.close()
+        return fuel_station
 
     def update(self, values):
         cursor = self.db.cursor()
         sql="update station set name= %s,fuel_type=%s, zip=%s  where id = %s"
         cursor.execute(sql, values)
         self.db.commit()
+        cursor.close()
     def delete(self, id):
         cursor = self.db.cursor()
         sql="delete from station where id = %s"
@@ -54,7 +67,7 @@ class StationDAO:
         cursor.execute(sql, values)
 
         self.db.commit()
-        print("delete done")
+        cursor.close()
 
     def convertToDictionary(self, result):
         colnames=['id','station_name','fuel_type_code', "zip"]
