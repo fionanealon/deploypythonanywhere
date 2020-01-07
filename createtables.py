@@ -1,4 +1,4 @@
-# Adapted from A. Beatty (2019) Data Representation: Galway-Mayo Institute of Technology https://github.com/andrewbeattycourseware/
+# Adapted from A. Beatty (2019) Data Representation: Galway-Mayo Institute of Technology https://github.com/andrewbeattycourseware/dataRepresentation
 from flask import Flask, jsonify, request, abort
 import requests
 import json
