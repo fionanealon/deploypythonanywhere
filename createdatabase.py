@@ -1,3 +1,4 @@
+# Adapted from A. Beatty (2019) Data Representation: Galway-Mayo Institute of Technology https://github.com/andrewbeattycourseware/dataRepresentation
 import mysql.connector
 import dbconfig as cfg
 
